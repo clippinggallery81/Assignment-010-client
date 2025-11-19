@@ -98,7 +98,7 @@ const Card = ({ property }) => {
 
         {/* Price and Action */}
         <div className="flex justify-between items-center">
-          <span className="text-2xl font-bold text-primary">
+          <span className="text-xl font-bold text-primary">
             {property.price}
           </span>
           <button className="btn btn-primary btn-sm text-white">

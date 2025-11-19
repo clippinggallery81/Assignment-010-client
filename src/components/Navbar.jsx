@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import logo from "../assets/logo.png";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
+import { AuthContext } from "../provider/AuthContext";
+import { FaUserCircle } from "react-icons/fa";
 
 const Navbar = () => {
+  const { user } = useContext(AuthContext);
+
   const links = (
     <div className="flex flex-col lg:flex-row gap-4">
       <li>
@@ -112,12 +116,30 @@ const Navbar = () => {
             <ul className="menu menu-horizontal gap-4 px-1">{links}</ul>
           </div>
 
-          <NavLink
-            to="/auth/login"
-            className="btn btn-primary text-white hover:btn-secondary hover:scale-105 transition ease-in-out"
-          >
-            Login
-          </NavLink>
+          {user ? (
+            <Link to={"/profile"} className="dropdown dropdown-end">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle avatar"
+              >
+                <div className="w-10 rounded-full">
+                  {user.photoURL ? (
+                    <img alt={user.displayName || "User"} src={user.photoURL} />
+                  ) : (
+                    <FaUserCircle className="w-full h-full text-gray-400" />
+                  )}
+                </div>
+              </div>
+            </Link>
+          ) : (
+            <NavLink
+              to="/login"
+              className="btn btn-primary text-white hover:btn-secondary hover:scale-105 transition ease-in-out"
+            >
+              Login
+            </NavLink>
+          )}
         </div>
       </div>
     </div>
