@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap");
+
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: light --default;
+}
+
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: #0070bb;
+  --color-secondary: #29abe1;
+}
+
+* {
+  font-family: "Instrument Sans", sans-serif;
+}
