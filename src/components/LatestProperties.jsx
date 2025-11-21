@@ -1,89 +1,44 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router";
 import Card from "./Card";
+import useProperties from "../hooks/useProperties";
 
 const LatestProperties = () => {
   const [filter, setFilter] = useState("all");
+  const { properties, loading, error } = useProperties();
 
-  // Temporary data - will be replaced with database data
-  const properties = [
-    {
-      id: 1,
-      title: "Modern Villa",
-      location: "Beverly Hills, CA",
-      price: "$2,500,000",
-      type: "buy",
-      image:
-        "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600",
-      beds: 4,
-      baths: 3,
-      area: "3500 sq ft",
-    },
-    {
-      id: 2,
-      title: "Luxury Apartment",
-      location: "Manhattan, NY",
-      price: "$3,500/month",
-      type: "rent",
-      image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600",
-      beds: 2,
-      baths: 2,
-      area: "1200 sq ft",
-    },
-    {
-      id: 3,
-      title: "Cozy Cottage",
-      location: "Austin, TX",
-      price: "$450,000",
-      type: "buy",
-      image:
-        "https://images.unsplash.com/photo-1599427303058-f04cbcf4756f?w=600",
-      beds: 3,
-      baths: 2,
-      area: "1800 sq ft",
-    },
-    {
-      id: 4,
-      title: "Penthouse Suite",
-      location: "Miami, FL",
-      price: "$5,000/month",
-      type: "rent",
-      image:
-        "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600",
-      beds: 3,
-      baths: 3,
-      area: "2500 sq ft",
-    },
-    {
-      id: 5,
-      title: "Beach House",
-      location: "Malibu, CA",
-      price: "$3,200,000",
-      type: "buy",
-      image:
-        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600",
-      beds: 5,
-      baths: 4,
-      area: "4200 sq ft",
-    },
-    {
-      id: 6,
-      title: "Studio Loft",
-      location: "Chicago, IL",
-      price: "$1,800/month",
-      type: "rent",
-      image:
-        "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600",
-      beds: 1,
-      baths: 1,
-      area: "650 sq ft",
-    },
-  ];
+  // Get latest 6 properties, sorted by _id (newest first)
+  // MongoDB _id contains timestamp, so newer properties have larger _id
+  const latestProperties = [...properties]
+    .sort((a, b) => {
+      // Convert _id to string and compare (newer _id > older _id)
+      return b._id.localeCompare(a._id);
+    })
+    .slice(0, 6);
 
   const filteredProperties =
     filter === "all"
-      ? properties
-      : properties.filter((property) => property.type === filter);
+      ? latestProperties
+      : latestProperties.filter((property) => property.category === filter);
+
+  if (loading) {
+    return (
+      <div className="my-16 text-center">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+        <p className="mt-4 text-gray-600">Loading properties...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="my-16 text-center">
+        <div className="alert alert-error max-w-md mx-auto">
+          <span>Error: {error}</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="my-16">
@@ -97,7 +52,7 @@ const LatestProperties = () => {
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex gap-3">
+        <div className="flex gap-3 flex-wrap">
           <button
             onClick={() => setFilter("all")}
             className={`btn ${
@@ -109,24 +64,44 @@ const LatestProperties = () => {
             All
           </button>
           <button
-            onClick={() => setFilter("buy")}
+            onClick={() => setFilter("Apartment")}
             className={`btn ${
-              filter === "buy"
+              filter === "Apartment"
                 ? "btn-primary text-white"
                 : "btn-outline btn-primary"
             }`}
           >
-            Buy
+            Apartment
           </button>
           <button
-            onClick={() => setFilter("rent")}
+            onClick={() => setFilter("House/Villa")}
             className={`btn ${
-              filter === "rent"
+              filter === "House/Villa"
                 ? "btn-primary text-white"
                 : "btn-outline btn-primary"
             }`}
           >
-            Rent
+            House/Villa
+          </button>
+          <button
+            onClick={() => setFilter("Commercial")}
+            className={`btn ${
+              filter === "Commercial"
+                ? "btn-primary text-white"
+                : "btn-outline btn-primary"
+            }`}
+          >
+            Commercial
+          </button>
+          <button
+            onClick={() => setFilter("Land/Plot")}
+            className={`btn ${
+              filter === "Land/Plot"
+                ? "btn-primary text-white"
+                : "btn-outline btn-primary"
+            }`}
+          >
+            Land/Plot
           </button>
         </div>
       </div>
@@ -134,7 +109,7 @@ const LatestProperties = () => {
       {/* Properties Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredProperties.map((property) => (
-          <Card key={property.id} property={property} />
+          <Card key={property._id || property.id} property={property} />
         ))}
       </div>
 
@@ -148,7 +123,7 @@ const LatestProperties = () => {
       {/* Show All Button */}
       <div className="text-center mt-12">
         <NavLink
-          to="/Properties"
+          to="/allProperties"
           className="btn btn-primary text-white px-8 py-3 text-lg hover:scale-105 transition"
         >
           Show All Properties

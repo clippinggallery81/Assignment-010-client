@@ -1,6 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { FaCheckCircle, FaEdit, FaTrash } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { AuthContext } from "../provider/AuthContext";
+import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 const Review = () => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     role: "",
@@ -10,6 +17,50 @@ const Review = () => {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [existingReview, setExistingReview] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const checkExistingReview = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/testimonials/user/${user.email}`
+      );
+      if (response.ok) {
+        const review = await response.json();
+        if (review) {
+          setExistingReview(review);
+          setFormData({
+            name: review.name,
+            role: review.role,
+            email: review.email,
+            rating: review.rating,
+            review: review.review,
+          });
+        }
+      }
+    } catch (error) {
+      // Silently fail - user can still submit new review
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (user?.email) {
+      // Auto-fill name and email from user context
+      setFormData((prev) => ({
+        ...prev,
+        name: user.displayName || "",
+        email: user.email,
+      }));
+      checkExistingReview();
+    } else {
+      setLoading(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,24 +70,129 @@ const Review = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would normally send data to your backend
-    console.log("Review submitted:", formData);
-    setSubmitted(true);
+    setSubmitting(true);
 
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setSubmitted(false);
+    const testimonialData = {
+      name: formData.name,
+      role: formData.role,
+      email: formData.email,
+      rating: parseInt(formData.rating),
+      review: formData.review,
+      created_at: new Date().toISOString(),
+    };
+
+    try {
+      const url = existingReview
+        ? `http://localhost:3000/testimonials/${existingReview._id}`
+        : "http://localhost:3000/testimonials";
+      const method = existingReview ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(testimonialData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit review");
+      }
+
+      const message = existingReview
+        ? "Your review has been updated successfully!"
+        : "Thank you! Your review has been submitted successfully!";
+      toast.success(message);
+      setSubmitted(true);
+      setIsEditing(false);
+
+      // Reload review data
+      await checkExistingReview();
+
+      // Navigate to home page after 2 seconds
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+    } catch (error) {
+      toast.error(error.message || "Failed to submit review");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!existingReview) return;
+
+    const result = await Swal.fire({
+      title: "Delete Review?",
+      text: "Are you sure you want to delete your review? This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      const response = await fetch(
+        `http://localhost:3000/testimonials/${existingReview._id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete review");
+      }
+
+      Swal.fire({
+        title: "Deleted!",
+        text: "Your review has been deleted successfully.",
+        icon: "success",
+        confirmButtonColor: "#3085d6",
+      });
+      setExistingReview(null);
       setFormData({
-        name: "",
+        name: user?.displayName || "",
         role: "",
-        email: "",
+        email: user?.email || "",
         rating: 5,
         review: "",
       });
-    }, 3000);
+    } catch (error) {
+      toast.error(error.message || "Failed to delete review");
+    }
   };
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    if (existingReview) {
+      setFormData({
+        name: existingReview.name,
+        role: existingReview.role,
+        email: existingReview.email,
+        rating: existingReview.rating,
+        review: existingReview.review,
+      });
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen py-16 flex items-center justify-center">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen py-16">
@@ -44,30 +200,46 @@ const Review = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-            Share Your Experience
+            {existingReview && !isEditing
+              ? "Your Review"
+              : existingReview
+              ? "Edit Your Review"
+              : "Share Your Experience"}
           </h1>
           <p className="text-gray-600 text-lg">
-            We'd love to hear about your experience with HomeNest
+            {existingReview && !isEditing
+              ? "You have already submitted a review"
+              : "We'd love to hear about your experience with HomeNest"}
           </p>
         </div>
 
         {/* Success Message */}
         {submitted && (
           <div className="alert alert-success mb-8 shadow-lg">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="stroke-current shrink-0 h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
+            <FaCheckCircle className="h-6 w-6" />
+            <span>
+              {existingReview
+                ? "Your review has been updated successfully!"
+                : "Thank you! Your review has been submitted successfully!"}
+            </span>
+          </div>
+        )}
+
+        {/* Edit/Delete Buttons */}
+        {existingReview && !isEditing && (
+          <div className="flex justify-center gap-4 mb-8">
+            <button
+              onClick={handleEdit}
+              className="btn btn-primary text-white gap-2"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <span>Thank you! Your review has been submitted successfully!</span>
+              <FaEdit /> Edit Review
+            </button>
+            <button
+              onClick={handleDelete}
+              className="btn btn-error text-white gap-2"
+            >
+              <FaTrash /> Delete Review
+            </button>
           </div>
         )}
 
@@ -86,9 +258,9 @@ const Review = () => {
                   type="text"
                   name="name"
                   value={formData.name}
-                  onChange={handleChange}
                   placeholder="Enter your full name"
-                  className="input input-bordered w-full text-lg"
+                  className="input input-bordered w-full text-lg bg-gray-100"
+                  readOnly
                   required
                 />
               </div>
@@ -104,9 +276,9 @@ const Review = () => {
                   type="email"
                   name="email"
                   value={formData.email}
-                  onChange={handleChange}
                   placeholder="your.email@example.com"
-                  className="input input-bordered w-full text-lg"
+                  className="input input-bordered w-full text-lg bg-gray-100"
+                  readOnly
                   required
                 />
               </div>
@@ -123,6 +295,7 @@ const Review = () => {
                   value={formData.role}
                   onChange={handleChange}
                   className="select select-bordered w-full text-lg"
+                  disabled={existingReview && !isEditing}
                   required
                 >
                   <option value="">Select your role</option>
@@ -154,6 +327,7 @@ const Review = () => {
                         className="mask mask-star-2 bg-yellow-400"
                         checked={formData.rating === star.toString()}
                         onChange={handleChange}
+                        disabled={existingReview && !isEditing}
                       />
                     ))}
                   </div>
@@ -177,6 +351,7 @@ const Review = () => {
                   onChange={handleChange}
                   placeholder="Tell us about your experience with HomeNest..."
                   className="textarea textarea-bordered h-32 text-lg outline-none w-full"
+                  disabled={existingReview && !isEditing}
                   required
                   minLength={10}
                 ></textarea>
@@ -189,12 +364,35 @@ const Review = () => {
 
               {/* Submit Button */}
               <div className="form-control mt-8">
-                <button
-                  type="submit"
-                  className="btn btn-primary text-white text-lg py-4 w-full hover:scale-105 transition"
-                >
-                  Submit Review
-                </button>
+                {existingReview && !isEditing ? null : (
+                  <div className="flex gap-4">
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      className="btn btn-primary text-white text-lg py-4 flex-1 hover:scale-105 transition"
+                    >
+                      {submitting ? (
+                        <>
+                          <span className="loading loading-spinner loading-sm"></span>
+                          {existingReview ? "Updating..." : "Submitting..."}
+                        </>
+                      ) : existingReview ? (
+                        "Update Review"
+                      ) : (
+                        "Submit Review"
+                      )}
+                    </button>
+                    {isEditing && (
+                      <button
+                        type="button"
+                        onClick={handleCancelEdit}
+                        className="btn btn-outline text-lg py-4"
+                      >
+                        Cancel
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             </form>
           </div>

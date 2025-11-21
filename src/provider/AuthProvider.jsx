@@ -51,9 +51,12 @@ const AuthProvider = ({ children }) => {
       if (!auth.currentUser)
         return Promise.reject(new Error("No authenticated user"));
       setLoading(true);
-      return updateProfile(auth.currentUser, profile).finally(() =>
-        setLoading(false)
-      );
+      return updateProfile(auth.currentUser, profile)
+        .then(() => {
+          // Update the user state with the new profile info
+          setUser({ ...auth.currentUser });
+        })
+        .finally(() => setLoading(false));
     },
     resetPassword: (email) => {
       setLoading(true);

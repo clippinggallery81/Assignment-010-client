@@ -24,6 +24,10 @@ const Login = () => {
   const from = location.state?.from?.pathname || "/";
 
   useEffect(() => {
+    document.title = "Login - Home Nest";
+  }, []);
+
+  useEffect(() => {
     const saved = localStorage.getItem("rememberEmail");
     if (saved) {
       setEmail(saved);

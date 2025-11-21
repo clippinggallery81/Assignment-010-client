@@ -32,6 +32,8 @@ const Profile = () => {
       });
       toast.success("Profile updated successfully!");
       setIsEditing(false);
+      // Refresh the page to show updated data
+      window.location.reload();
     } catch {
       toast.error("Failed to update profile");
     } finally {

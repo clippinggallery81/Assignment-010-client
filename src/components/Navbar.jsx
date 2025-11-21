@@ -1,11 +1,23 @@
 import React, { useContext } from "react";
 import logo from "../assets/logo.png";
-import { Link, NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../provider/AuthContext";
-import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle, FaBars } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("Logged out successfully!");
+      navigate("/");
+    } catch {
+      toast.error("Failed to logout");
+    }
+  };
 
   const links = (
     <div className="flex flex-col lg:flex-row gap-4">
@@ -23,38 +35,50 @@ const Navbar = () => {
       </li>
       <li>
         <NavLink
-          to={"/Properties"}
+          to={"/allProperties"}
           className={({ isActive }) =>
             isActive
               ? "text-primary border-b-2 border-primary pb-1 rounded-none"
               : ""
           }
         >
-          Properties
+          All Properties
         </NavLink>
       </li>
       <li>
         <NavLink
-          to={"/buyProperties"}
+          to={"/addProperties"}
           className={({ isActive }) =>
             isActive
               ? "text-primary border-b-2 border-primary pb-1 rounded-none"
               : ""
           }
         >
-          Buy Properties
+          Add Properties
         </NavLink>
       </li>
       <li>
         <NavLink
-          to={"/rentProperties"}
+          to={"/myProperties"}
           className={({ isActive }) =>
             isActive
               ? "text-primary border-b-2 border-primary pb-1 rounded-none"
               : ""
           }
         >
-          Rent Properties
+          My Properties
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to={"/myRatings"}
+          className={({ isActive }) =>
+            isActive
+              ? "text-primary border-b-2 border-primary pb-1 rounded-none"
+              : ""
+          }
+        >
+          My Ratings
         </NavLink>
       </li>
     </div>
@@ -70,20 +94,7 @@ const Navbar = () => {
         >
           <div className="dropdown">
             <div tabIndex={0} role="button" className="lg:hidden">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />
-              </svg>
+              <FaBars className="h-5 w-5" />
             </div>
             <ul
               tabIndex="-1"
@@ -117,7 +128,7 @@ const Navbar = () => {
           </div>
 
           {user ? (
-            <Link to={"/profile"} className="dropdown dropdown-end">
+            <div className="dropdown dropdown-end">
               <div
                 tabIndex={0}
                 role="button"
@@ -125,20 +136,61 @@ const Navbar = () => {
               >
                 <div className="w-10 rounded-full">
                   {user.photoURL ? (
-                    <img alt={user.displayName || "User"} src={user.photoURL} />
+                    <img
+                      alt={user.displayName || "User"}
+                      src={user.photoURL}
+                      onError={(e) => {
+                        e.target.style.display = "none";
+                        e.target.parentElement.innerHTML =
+                          '<svg class="w-full h-full text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>';
+                      }}
+                    />
                   ) : (
                     <FaUserCircle className="w-full h-full text-gray-400" />
                   )}
                 </div>
               </div>
-            </Link>
+              <ul
+                tabIndex={0}
+                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+              >
+                <li className="menu-title">
+                  <span className="text-base font-semibold">
+                    {user.displayName || "User"}
+                  </span>
+                </li>
+                <li className="disabled">
+                  <span className="text-xs text-gray-500">{user.email}</span>
+                </li>
+                <div className="divider my-1"></div>
+                <li>
+                  <NavLink to="/profile">Update Profile</NavLink>
+                </li>
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="text-error hover:bg-error hover:text-white"
+                  >
+                    Log out
+                  </button>
+                </li>
+              </ul>
+            </div>
           ) : (
-            <NavLink
-              to="/login"
-              className="btn btn-primary text-white hover:btn-secondary hover:scale-105 transition ease-in-out"
-            >
-              Login
-            </NavLink>
+            <div className="flex gap-2">
+              <NavLink
+                to="/auth/login"
+                className="btn btn-outline btn-primary hover:scale-105 transition ease-in-out"
+              >
+                Login
+              </NavLink>
+              <NavLink
+                to="/auth/signup"
+                className="btn btn-primary text-white hover:scale-105 transition ease-in-out"
+              >
+                Sign Up
+              </NavLink>
+            </div>
           )}
         </div>
       </div>

@@ -59,7 +59,7 @@ const Carousel = () => {
                 {slide.description}
               </p>
               <Link
-                to="/properties"
+                to="/allProperties"
                 className="btn btn-primary text-white px-8 py-3 text-lg"
               >
                 Explore Now
