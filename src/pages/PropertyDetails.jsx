@@ -34,7 +34,9 @@ const PropertyDetails = () => {
 
   const fetchPropertyDetails = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/properties/${id}`);
+      const response = await fetch(
+        `https://home-nest-server-ten.vercel.app/properties/${id}`
+      );
 
       if (!response.ok) {
         throw new Error("Property not found");
@@ -51,7 +53,7 @@ const PropertyDetails = () => {
   const fetchReviews = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/properties/${id}/reviews`
+        `https://home-nest-server-ten.vercel.app/properties/${id}/reviews`
       );
       if (response.ok) {
         const data = await response.json();
@@ -93,8 +95,8 @@ const PropertyDetails = () => {
 
     try {
       const url = editingReview
-        ? `http://localhost:3000/reviews/${editingReview._id}`
-        : `http://localhost:3000/properties/${id}/reviews`;
+        ? `https://home-nest-server-ten.vercel.app/reviews/${editingReview._id}`
+        : `https://home-nest-server-ten.vercel.app/properties/${id}/reviews`;
 
       const method = editingReview ? "PUT" : "POST";
 
@@ -152,7 +154,7 @@ const PropertyDetails = () => {
 
     try {
       const response = await authenticatedFetch(
-        `http://localhost:3000/reviews/${reviewId}`,
+        `https://home-nest-server-ten.vercel.app/reviews/${reviewId}`,
         {
           method: "DELETE",
         }

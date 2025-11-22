@@ -1,5 +1,6 @@
 import React from "react";
-import { FaLinkedin, FaTwitter, FaEnvelope } from "react-icons/fa";
+import { FaLinkedin, FaEnvelope } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 const OurTeam = () => {
   const teamMembers = [
@@ -104,9 +105,9 @@ const OurTeam = () => {
                   <a
                     href={member.twitter}
                     className="p-2 bg-base-300 rounded-full hover:bg-primary hover:text-white transition-colors duration-300"
-                    aria-label="Twitter"
+                    aria-label="X (Twitter)"
                   >
-                    <FaTwitter className="w-5 h-5" />
+                    <FaXTwitter className="w-5 h-5" />
                   </a>
                   <a
                     href={`mailto:${member.email}`}

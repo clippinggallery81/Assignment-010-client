@@ -3,6 +3,7 @@ import { AuthContext } from "../provider/AuthContext";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { FaHome, FaMapMarkerAlt, FaDollarSign, FaImage } from "react-icons/fa";
+import { authenticatedFetch } from "../utils/api";
 
 const AddProperty = () => {
   const { user } = useContext(AuthContext);
@@ -55,7 +56,7 @@ const AddProperty = () => {
 
     try {
       const response = await authenticatedFetch(
-        "http://localhost:3000/properties",
+        "https://home-nest-server-ten.vercel.app/properties",
         {
           method: "POST",
           body: JSON.stringify(propertyData),

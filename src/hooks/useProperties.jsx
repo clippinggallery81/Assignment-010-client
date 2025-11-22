@@ -9,7 +9,9 @@ const useProperties = () => {
     const fetchProperties = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:3000/properties");
+        const response = await fetch(
+          "https://home-nest-server-ten.vercel.app/properties"
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch properties");

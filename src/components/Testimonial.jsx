@@ -13,7 +13,9 @@ const Testimonial = () => {
 
   const fetchTestimonials = async () => {
     try {
-      const response = await fetch("http://localhost:3000/testimonials");
+      const response = await fetch(
+        "https://home-nest-server-ten.vercel.app/testimonials"
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch testimonials");
       }
@@ -131,11 +133,21 @@ const Testimonial = () => {
 
                         {/* Author Info */}
                         <div className="flex items-center gap-4">
-                          <div className="avatar placeholder">
-                            <div className="w-12 h-12 md:w-14 md:h-14 rounded-full ring ring-primary ring-offset-2 bg-primary text-white">
-                              <span className="text-xl font-bold">
-                                {testimonial.name.charAt(0)}
-                              </span>
+                          <div className="avatar">
+                            <div className="w-12 h-12 md:w-14 md:h-14 rounded-full ring ring-primary ring-offset-2">
+                              {testimonial.profile_photo ? (
+                                <img
+                                  src={testimonial.profile_photo}
+                                  alt={testimonial.name}
+                                  className="object-cover"
+                                />
+                              ) : (
+                                <div className="bg-primary text-white flex items-center justify-center w-full h-full">
+                                  <span className="text-xl font-bold">
+                                    {testimonial.name.charAt(0)}
+                                  </span>
+                                </div>
+                              )}
                             </div>
                           </div>
                           <div>

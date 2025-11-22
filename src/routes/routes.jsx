@@ -13,6 +13,10 @@ import UpdateProperty from "../pages/UpdateProperty";
 import MyRatings from "../pages/MyRatings";
 import ErrorPage from "../pages/ErrorPage";
 import PrivateRoute from "./PrivateRoute";
+import HelpCenter from "../pages/HelpCenter";
+import PrivacyPolicy from "../pages/PrivacyPolicy";
+import TermsOfService from "../pages/TermsOfService";
+import ContactUs from "../pages/ContactUs";
 
 export const router = createBrowserRouter([
   {
@@ -77,7 +81,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/review",
-        element: <Review />,
+        element: (
+          <PrivateRoute>
+            <Review />
+          </PrivateRoute>
+        ),
         handle: { title: "Leave a Review" },
       },
       {
@@ -98,6 +106,26 @@ export const router = createBrowserRouter([
         path: "/auth/signup",
         element: <SignUp />,
         handle: { title: "Sign Up" },
+      },
+      {
+        path: "/help",
+        element: <HelpCenter />,
+        handle: { title: "Help Center" },
+      },
+      {
+        path: "/privacy",
+        element: <PrivacyPolicy />,
+        handle: { title: "Privacy Policy" },
+      },
+      {
+        path: "/terms",
+        element: <TermsOfService />,
+        handle: { title: "Terms of Service" },
+      },
+      {
+        path: "/contact",
+        element: <ContactUs />,
+        handle: { title: "Contact Us" },
       },
       {
         path: "*",

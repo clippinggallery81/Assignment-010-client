@@ -26,11 +26,12 @@ const Review = () => {
   const checkExistingReview = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/testimonials/user/${user.email}`
+        `https://home-nest-server-ten.vercel.app/testimonials/user/${user.email}`
       );
       if (response.ok) {
         const review = await response.json();
-        if (review) {
+        // Check if review exists (not null)
+        if (review && review._id) {
           setExistingReview(review);
           setFormData({
             name: review.name,
@@ -75,19 +76,29 @@ const Review = () => {
     e.preventDefault();
     setSubmitting(true);
 
-    const testimonialData = {
-      name: formData.name,
-      role: formData.role,
-      email: formData.email,
-      rating: parseInt(formData.rating),
-      review: formData.review,
-      created_at: new Date().toISOString(),
-    };
+    const testimonialData = existingReview
+      ? {
+          // For update - only update editable fields
+          role: formData.role,
+          rating: parseInt(formData.rating),
+          review: formData.review,
+          updated_at: new Date().toISOString(),
+        }
+      : {
+          // For new submission - include all fields
+          name: formData.name,
+          role: formData.role,
+          email: formData.email,
+          rating: parseInt(formData.rating),
+          review: formData.review,
+          profile_photo: user?.photoURL || null,
+          created_at: new Date().toISOString(),
+        };
 
     try {
       const url = existingReview
-        ? `http://localhost:3000/testimonials/${existingReview._id}`
-        : "http://localhost:3000/testimonials";
+        ? `https://home-nest-server-ten.vercel.app/testimonials/${existingReview._id}`
+        : "https://home-nest-server-ten.vercel.app/testimonials";
       const method = existingReview ? "PUT" : "POST";
 
       const response = await authenticatedFetch(url, {
@@ -96,7 +107,11 @@ const Review = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to submit review");
+        const errorData = await response.json().catch(() => ({}));
+        console.error("Submit error:", errorData);
+        throw new Error(
+          errorData.error || errorData.message || "Failed to submit review"
+        );
       }
 
       const message = existingReview
@@ -114,7 +129,10 @@ const Review = () => {
         navigate("/");
       }, 2000);
     } catch (error) {
-      toast.error("Unable to submit your review. Please try again.");
+      console.error("Review submission error:", error);
+      toast.error(
+        error.message || "Unable to submit your review. Please try again."
+      );
     } finally {
       setSubmitting(false);
     }
@@ -138,7 +156,7 @@ const Review = () => {
 
     try {
       const response = await authenticatedFetch(
-        `http://localhost:3000/testimonials/${existingReview._id}`,
+        `https://home-nest-server-ten.vercel.app/testimonials/${existingReview._id}`,
         {
           method: "DELETE",
         }
@@ -279,6 +297,30 @@ const Review = () => {
                   readOnly
                   required
                 />
+              </div>
+
+              {/* Profile Photo URL Field */}
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text font-semibold text-lg">
+                    Profile Photo URL
+                  </span>
+                </label>
+                <input
+                  type="url"
+                  value={user?.photoURL || "No profile photo"}
+                  className="input input-bordered w-full text-lg bg-base-200"
+                  readOnly
+                />
+                {user?.photoURL && (
+                  <div className="mt-3">
+                    <img
+                      src={user.photoURL}
+                      alt="Profile Preview"
+                      className="w-16 h-16 rounded-full object-cover ring ring-primary ring-offset-2"
+                    />
+                  </div>
+                )}
               </div>
 
               {/* Role Field */}

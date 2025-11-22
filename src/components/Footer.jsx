@@ -1,12 +1,12 @@
 import { IoIosMail } from "react-icons/io";
 import {
   FaFacebookF,
-  FaTwitter,
   FaInstagram,
   FaLinkedinIn,
   FaPhoneAlt,
   FaMapMarkerAlt,
 } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import logo from "../assets/logo.png";
 import { NavLink } from "react-router";
 
@@ -40,9 +40,9 @@ const Footer = () => {
               <a
                 href="#"
                 className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition text-white"
-                aria-label="Twitter"
+                aria-label="X (Twitter)"
               >
-                <FaTwitter />
+                <FaXTwitter />
               </a>
               <a
                 href="#"
@@ -72,26 +72,34 @@ const Footer = () => {
               </li>
               <li>
                 <NavLink
-                  to="/Properties"
+                  to="/allProperties"
                   className="hover:text-primary transition"
                 >
-                  Properties
+                  All Properties
                 </NavLink>
               </li>
               <li>
                 <NavLink
-                  to="/buyProperties"
+                  to="/addProperties"
                   className="hover:text-primary transition"
                 >
-                  Buy Properties
+                  Add Property
                 </NavLink>
               </li>
               <li>
                 <NavLink
-                  to="/rentProperties"
+                  to="/myProperties"
                   className="hover:text-primary transition"
                 >
-                  Rent Properties
+                  My Properties
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/myRatings"
+                  className="hover:text-primary transition"
+                >
+                  My Ratings
                 </NavLink>
               </li>
               <li>
@@ -107,29 +115,35 @@ const Footer = () => {
             <h3 className="text-white text-lg font-bold mb-4">Support</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="hover:text-primary transition">
+                <NavLink to="/help" className="hover:text-primary transition">
                   Help Center
-                </a>
+                </NavLink>
               </li>
               <li>
-                <a href="#" className="hover:text-primary transition">
+                <NavLink to="/help" className="hover:text-primary transition">
                   FAQs
-                </a>
+                </NavLink>
               </li>
               <li>
-                <a href="#" className="hover:text-primary transition">
+                <NavLink
+                  to="/privacy"
+                  className="hover:text-primary transition"
+                >
                   Privacy Policy
-                </a>
+                </NavLink>
               </li>
               <li>
-                <a href="#" className="hover:text-primary transition">
+                <NavLink to="/terms" className="hover:text-primary transition">
                   Terms of Service
-                </a>
+                </NavLink>
               </li>
               <li>
-                <a href="#" className="hover:text-primary transition">
+                <NavLink
+                  to="/contact"
+                  className="hover:text-primary transition"
+                >
                   Contact Us
-                </a>
+                </NavLink>
               </li>
             </ul>
           </div>
@@ -173,24 +187,24 @@ const Footer = () => {
               &copy; {currentYear} Home Nest. All rights reserved.
             </p>
             <div className="flex gap-6 text-sm">
-              <a
-                href="#"
+              <NavLink
+                to="/privacy"
                 className="text-gray-400 hover:text-primary transition"
               >
                 Privacy
-              </a>
-              <a
-                href="#"
+              </NavLink>
+              <NavLink
+                to="/terms"
                 className="text-gray-400 hover:text-primary transition"
               >
                 Terms
-              </a>
-              <a
-                href="#"
+              </NavLink>
+              <NavLink
+                to="/help"
                 className="text-gray-400 hover:text-primary transition"
               >
-                Cookies
-              </a>
+                Help
+              </NavLink>
             </div>
           </div>
         </div>

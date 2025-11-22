@@ -19,8 +19,8 @@ const MyRatings = () => {
 
   const fetchMyRatings = async () => {
     try {
-      const response = await authenticatedFetch(
-        `http://localhost:3000/my-property-ratings/${user.email}`
+      const response = await fetch(
+        `https://home-nest-server-ten.vercel.app/my-property-ratings/${user.email}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch ratings");

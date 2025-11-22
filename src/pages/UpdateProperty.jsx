@@ -37,7 +37,9 @@ const UpdateProperty = () => {
 
   const fetchPropertyData = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/properties/${id}`);
+      const response = await fetch(
+        `https://home-nest-server-ten.vercel.app/properties/${id}`
+      );
       if (!response.ok) {
         throw new Error("Property not found");
       }
@@ -91,7 +93,7 @@ const UpdateProperty = () => {
 
     try {
       const response = await authenticatedFetch(
-        `http://localhost:3000/properties/${id}`,
+        `https://home-nest-server-ten.vercel.app/properties/${id}`,
         {
           method: "PUT",
           body: JSON.stringify(updatedPropertyData),

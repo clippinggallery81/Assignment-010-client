@@ -29,8 +29,8 @@ const MyProperties = () => {
 
   const fetchMyProperties = async () => {
     try {
-      const response = await authenticatedFetch(
-        `http://localhost:3000/my-properties/${user.email}`
+      const response = await fetch(
+        `https://home-nest-server-ten.vercel.app/my-properties/${user.email}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch properties");
@@ -63,7 +63,7 @@ const MyProperties = () => {
 
     try {
       const response = await authenticatedFetch(
-        `http://localhost:3000/properties/${id}`,
+        `https://home-nest-server-ten.vercel.app/properties/${id}`,
         {
           method: "DELETE",
         }
