@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../provider/AuthContext";
 import { FaUserCircle, FaBars } from "react-icons/fa";
 import { toast } from "react-toastify";
+import Switch from "./Switch";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
@@ -84,7 +85,7 @@ const Navbar = () => {
     </div>
   );
   return (
-    <div className="sticky top-0 z-50 bg-white border-b border-gray-300 shadow-sm">
+    <div className="sticky top-0 z-50 bg-base-100 border-b border-base-300 shadow-sm">
       <div className="navbar bg-base-100 w-10/12 mx-auto items-center">
         <div
           data-aos="fade-right"
@@ -126,7 +127,9 @@ const Navbar = () => {
           >
             <ul className="menu menu-horizontal gap-4 px-1">{links}</ul>
           </div>
-
+          <div>
+            <Switch />
+          </div>
           {user ? (
             <div className="dropdown dropdown-end">
               <div

@@ -25,7 +25,7 @@ const LatestProperties = () => {
     return (
       <div className="my-16 text-center">
         <span className="loading loading-spinner loading-lg text-primary"></span>
-        <p className="mt-4 text-gray-600">Loading properties...</p>
+        <p className="mt-4 text-base-content/70">Loading properties...</p>
       </div>
     );
   }
@@ -34,7 +34,10 @@ const LatestProperties = () => {
     return (
       <div className="my-16 text-center">
         <div className="alert alert-error max-w-md mx-auto">
-          <span>Error: {error}</span>
+          <span>
+            Unable to load properties. Please check your connection and try
+            again.
+          </span>
         </div>
       </div>
     );
@@ -45,10 +48,10 @@ const LatestProperties = () => {
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
-            Latest Properties
-          </h2>
-          <p className="text-gray-600 mt-2">Discover our newest listings</p>
+          <h2 className="text-3xl md:text-4xl font-bold">Latest Properties</h2>
+          <p className="text-base-content/70 mt-2">
+            Discover our newest listings
+          </p>
         </div>
 
         {/* Filter Buttons */}
@@ -116,7 +119,7 @@ const LatestProperties = () => {
       {/* No Results Message */}
       {filteredProperties.length === 0 && (
         <div className="text-center py-16">
-          <p className="text-xl text-gray-500">No properties found</p>
+          <p className="text-xl text-base-content/60">No properties found</p>
         </div>
       )}
 

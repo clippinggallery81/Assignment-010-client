@@ -20,23 +20,23 @@ const Card = ({ property }) => {
 
       <div className="card-body">
         {/* Property Name */}
-        <h3 className="card-title text-xl font-bold text-gray-800">
+        <h3 className="card-title text-xl font-bold">
           {property.property_name}
         </h3>
 
         {/* Category */}
-        <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+        <div className="flex items-center gap-2 text-sm text-base-content/70 mb-2">
           <FaTag className="text-primary" />
           <span className="font-semibold">{property.category}</span>
         </div>
 
         {/* Short Description */}
-        <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+        <p className="text-base-content/70 text-sm mb-3 line-clamp-2">
           {property.description}
         </p>
 
         {/* Location */}
-        <div className="flex items-center gap-2 text-gray-700 mb-3">
+        <div className="flex items-center gap-2 text-base-content/80 mb-3">
           <FaMapMarkerAlt className="text-primary shrink-0" />
           <span className="text-sm">
             {property.location.area}, {property.location.city}
@@ -44,7 +44,7 @@ const Card = ({ property }) => {
         </div>
 
         {/* Posted By */}
-        <div className="flex items-center gap-2 text-gray-600 mb-3">
+        <div className="flex items-center gap-2 text-base-content/70 mb-3">
           <FaUser className="text-primary shrink-0" />
           <span className="text-sm font-medium">{property.posted_by.name}</span>
         </div>
@@ -52,20 +52,20 @@ const Card = ({ property }) => {
         <div className="divider my-2"></div>
 
         {/* Property Price and View Details Button */}
-        <div className="flex justify-between items-center">
+        <div className="md:flex justify-between items-center">
           <div className="flex flex-col">
             <span className="text-2xl font-bold text-primary">
               {property.currency} {property.price.toLocaleString()}
             </span>
             {property.price_unit && (
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-base-content/60">
                 {property.price_unit}
               </span>
             )}
           </div>
           <Link
             to={`/propertiesDetails/${property._id}`}
-            className="btn btn-primary btn-sm text-white hover:scale-105 transition"
+            className="btn btn-primary btn-sm text-white hover:scale-105 transition w-full md:w-auto mt-4 md:mt-0"
           >
             View Details
           </Link>

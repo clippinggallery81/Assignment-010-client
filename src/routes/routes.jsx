@@ -11,12 +11,14 @@ import PropertyDetails from "../pages/PropertyDetails";
 import MyProperties from "../pages/MyProperties";
 import UpdateProperty from "../pages/UpdateProperty";
 import MyRatings from "../pages/MyRatings";
+import ErrorPage from "../pages/ErrorPage";
 import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
@@ -96,6 +98,11 @@ export const router = createBrowserRouter([
         path: "/auth/signup",
         element: <SignUp />,
         handle: { title: "Sign Up" },
+      },
+      {
+        path: "*",
+        element: <ErrorPage />,
+        handle: { title: "404 - Not Found" },
       },
     ],
   },

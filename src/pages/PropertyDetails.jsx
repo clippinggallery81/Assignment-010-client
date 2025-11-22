@@ -14,6 +14,7 @@ import {
 } from "react-icons/fa";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { authenticatedFetch } from "../utils/api";
 
 const PropertyDetails = () => {
   const { id } = useParams();
@@ -41,8 +42,7 @@ const PropertyDetails = () => {
       const data = await response.json();
       setProperty(data);
     } catch (err) {
-      setError(err.message);
-      toast.error(`Failed to load property: ${err.message}`);
+      setError("Unable to load property details. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -64,7 +64,7 @@ const PropertyDetails = () => {
         setUserReview(existingReview || null);
       }
     } catch (err) {
-      toast.error("Failed to load reviews");
+      // Silently handle - reviews section will show empty
     }
   };
 
@@ -98,11 +98,8 @@ const PropertyDetails = () => {
 
       const method = editingReview ? "PUT" : "POST";
 
-      const response = await fetch(url, {
+      const response = await authenticatedFetch(url, {
         method,
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify(reviewData),
       });
 
@@ -154,7 +151,7 @@ const PropertyDetails = () => {
     if (!result.isConfirmed) return;
 
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         `http://localhost:3000/reviews/${reviewId}`,
         {
           method: "DELETE",
@@ -244,7 +241,7 @@ const PropertyDetails = () => {
         <div
           data-aos="fade-up"
           data-aos-duration="1000"
-          className="bg-white rounded-2xl shadow-xl overflow-hidden mb-10"
+          className="bg-base-100 rounded-2xl shadow-xl overflow-hidden mb-10"
         >
           {/* Property Image */}
           <div className="relative h-96 overflow-hidden">
@@ -264,10 +261,10 @@ const PropertyDetails = () => {
             {/* Property Name and Price */}
             <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-6">
               <div>
-                <h1 className="text-4xl font-bold text-gray-800 mb-2">
+                <h1 className="text-4xl font-bold mb-2">
                   {property.property_name}
                 </h1>
-                <div className="flex items-center gap-2 text-gray-600">
+                <div className="flex items-center gap-2 text-base-content/70">
                   <FaTag className="text-primary" />
                   <span className="text-lg font-semibold">
                     {property.category}
@@ -279,7 +276,7 @@ const PropertyDetails = () => {
                   {property.currency} {property.price.toLocaleString()}
                 </div>
                 {property.price_unit && (
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-base-content/60">
                     {property.price_unit}
                   </span>
                 )}
@@ -288,30 +285,28 @@ const PropertyDetails = () => {
 
             {/* Description */}
             <div className="mb-6">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-3">
-                Description
-              </h2>
-              <p className="text-gray-700 leading-relaxed">
+              <h2 className="text-2xl font-semibold mb-3">Description</h2>
+              <p className="text-base-content/80 leading-relaxed">
                 {property.description}
               </p>
             </div>
 
             {/* Location */}
             <div className="mb-6">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <h2 className="text-2xl font-semibold mb-3 flex items-center gap-2">
                 <FaMapMarkerAlt className="text-primary" />
                 Location
               </h2>
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <p className="text-gray-700 mb-1">
+              <div className="bg-base-200 p-4 rounded-lg">
+                <p className="text-base-content/80 mb-1">
                   <span className="font-semibold">Area:</span>{" "}
                   {property.location.area}
                 </p>
-                <p className="text-gray-700 mb-1">
+                <p className="text-base-content/80 mb-1">
                   <span className="font-semibold">City:</span>{" "}
                   {property.location.city}
                 </p>
-                <p className="text-gray-700">
+                <p className="text-base-content/80">
                   <span className="font-semibold">Address:</span>{" "}
                   {property.location.address}
                 </p>
@@ -319,10 +314,8 @@ const PropertyDetails = () => {
             </div>
 
             {/* Posted Information */}
-            <div className="border-t pt-6">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-                Posted By
-              </h2>
+            <div className="border-t border-base-300 pt-6">
+              <h2 className="text-2xl font-semibold mb-4">Posted By</h2>
               <div className="flex items-center gap-4">
                 {property.posted_by.profile_photo ? (
                   <img
@@ -344,13 +337,13 @@ const PropertyDetails = () => {
                   </div>
                   <div className="flex items-center gap-2 mb-1">
                     <FaEnvelope className="text-primary" />
-                    <span className="text-gray-600">
+                    <span className="text-base-content/70">
                       {property.posted_by.email}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <FaCalendar className="text-primary" />
-                    <span className="text-gray-600">
+                    <span className="text-base-content/70">
                       Posted on{" "}
                       {new Date(property.posted_date).toLocaleDateString()}
                     </span>
@@ -366,12 +359,10 @@ const PropertyDetails = () => {
           data-aos="fade-up"
           data-aos-duration="1000"
           data-aos-delay="200"
-          className="bg-white rounded-2xl shadow-xl p-8"
+          className="bg-base-100 rounded-2xl shadow-xl p-8"
         >
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-3xl font-bold text-gray-800">
-              Ratings & Reviews
-            </h2>
+            <h2 className="text-3xl font-bold">Ratings & Reviews</h2>
             {reviews.length > 0 && (
               <div className="text-center">
                 <div className="text-3xl font-bold text-primary">
@@ -380,7 +371,7 @@ const PropertyDetails = () => {
                 <div className="flex items-center gap-1 mb-1">
                   {renderStars(Math.round(calculateAverageRating()))}
                 </div>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-base-content/70">
                   {reviews.length} reviews
                 </p>
               </div>
@@ -388,8 +379,8 @@ const PropertyDetails = () => {
           </div>
 
           {/* Add Review Form */}
-          <div id="review-form" className="bg-gray-50 rounded-xl p-6 mb-8">
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+          <div id="review-form" className="bg-base-200 rounded-xl p-6 mb-8">
+            <h3 className="text-xl font-semibold mb-4">
               {editingReview
                 ? "Edit Your Review"
                 : userReview
@@ -508,16 +499,16 @@ const PropertyDetails = () => {
                         </span>
                       )}
                     </div>
-                    <span className="text-sm text-gray-500">
+                    <span className="text-sm text-base-content/60">
                       {review.created_at
                         ? new Date(review.created_at).toLocaleDateString()
                         : "Recently"}
                     </span>
                   </div>
-                  <p className="text-gray-700">{review.review_text}</p>
+                  <p className="text-base-content/80">{review.review_text}</p>
                   <div className="flex items-center justify-between mt-2">
                     {review.reviewer_name && (
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-base-content/60">
                         - {review.reviewer_name}
                       </p>
                     )}
@@ -542,9 +533,9 @@ const PropertyDetails = () => {
               ))
             ) : (
               <div className="text-center py-10">
-                <FaStar className="text-6xl text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-600 text-lg">No reviews yet</p>
-                <p className="text-gray-500">
+                <FaStar className="text-6xl text-base-content/20 mx-auto mb-4" />
+                <p className="text-base-content/70 text-lg">No reviews yet</p>
+                <p className="text-base-content/60">
                   Be the first to review this property!
                 </p>
               </div>

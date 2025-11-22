@@ -56,13 +56,11 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <div className="my-16 py-16 bg-white">
+    <div className="my-16 py-16">
       {/* Header */}
       <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-          Why Choose Us ?
-        </h2>
-        <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Us ?</h2>
+        <p className="text-base-content/70 text-lg max-w-2xl mx-auto">
           Discover what makes us the preferred choice for thousands of property
           seekers
         </p>
@@ -82,12 +80,12 @@ const WhyChooseUs = () => {
               </div>
 
               {/* Title */}
-              <h3 className="card-title text-xl font-bold text-gray-800 mb-3">
+              <h3 className="card-title text-xl font-bold mb-3">
                 {feature.title}
               </h3>
 
               {/* Description */}
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-base-content/70 leading-relaxed">
                 {feature.description}
               </p>
             </div>
@@ -98,10 +96,10 @@ const WhyChooseUs = () => {
       {/* CTA Section */}
       <div className="text-center mt-16">
         <div className="bg-linear-to-r from-primary/10 to-secondary/10 rounded-2xl p-8 md:p-12">
-          <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
+          <h3 className="text-2xl md:text-3xl font-bold mb-4">
             Ready to Find Your Dream Home?
           </h3>
-          <p className="text-gray-600 mb-6 text-lg">
+          <p className="text-base-content/70 mb-6 text-lg">
             Join thousands of satisfied customers who found their perfect
             property with us
           </p>

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router";
 import { AuthContext } from "../provider/AuthContext";
 import { FaStar, FaCalendar, FaHome } from "react-icons/fa";
+import { authenticatedFetch } from "../utils/api";
 
 const MyRatings = () => {
   const { user } = useContext(AuthContext);
@@ -18,7 +19,7 @@ const MyRatings = () => {
 
   const fetchMyRatings = async () => {
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         `http://localhost:3000/my-property-ratings/${user.email}`
       );
       if (!response.ok) {
@@ -27,7 +28,9 @@ const MyRatings = () => {
       const data = await response.json();
       setRatings(data);
     } catch (err) {
-      setError(err.message);
+      setError(
+        "Unable to load your ratings. Please check your connection and try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -58,8 +61,12 @@ const MyRatings = () => {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="text-center">
-          <p className="text-red-500 text-xl font-semibold">Error: {error}</p>
-          <p className="text-gray-600 mt-2">Failed to load your ratings</p>
+          <p className="text-red-500 text-xl font-semibold">
+            Error: Failed to fetch ratings
+          </p>
+          <p className="text-base-content/70 mt-2">
+            Unable to load your ratings. Please try again.
+          </p>
         </div>
       </div>
     );
@@ -74,8 +81,8 @@ const MyRatings = () => {
           data-aos-duration="1000"
           className="text-center mb-10"
         >
-          <h1 className="text-4xl font-bold text-gray-800 mb-3">My Ratings</h1>
-          <p className="text-gray-600 text-lg">
+          <h1 className="text-4xl font-bold mb-3">My Ratings</h1>
+          <p className="text-base-content/70 text-lg">
             Reviews received on your properties
           </p>
           <div className="mt-2 text-primary font-semibold">
@@ -124,11 +131,11 @@ const MyRatings = () => {
                             className="flex items-center gap-2 hover:text-primary transition"
                           >
                             <FaHome className="text-primary" />
-                            <h3 className="text-xl font-bold text-gray-800">
+                            <h3 className="text-xl font-bold">
                               {rating.property_name}
                             </h3>
                           </Link>
-                          <p className="text-sm text-gray-500 mt-1">
+                          <p className="text-sm text-base-content/60 mt-1">
                             Reviewed by {rating.reviewer_name}
                           </p>
                         </div>
@@ -141,14 +148,14 @@ const MyRatings = () => {
                       </div>
 
                       {/* Review Text */}
-                      <div className="bg-gray-50 p-4 rounded-lg mb-3">
-                        <p className="text-gray-700 leading-relaxed">
+                      <div className="bg-base-200 p-4 rounded-lg mb-3">
+                        <p className="text-base-content/80 leading-relaxed">
                           "{rating.review_text}"
                         </p>
                       </div>
 
                       {/* Review Date */}
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <div className="flex items-center gap-2 text-sm text-base-content/70">
                         <FaCalendar className="text-primary" />
                         <span>
                           Posted on{" "}
@@ -173,13 +180,11 @@ const MyRatings = () => {
         ) : (
           <div
             data-aos="fade-up"
-            className="text-center py-20 bg-white rounded-2xl shadow-lg"
+            className="text-center py-20 bg-base-100 rounded-2xl shadow-lg"
           >
             <div className="text-6xl mb-4">⭐</div>
-            <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-              No Ratings Yet
-            </h3>
-            <p className="text-gray-600 mb-6">
+            <h3 className="text-2xl font-semibold mb-2">No Ratings Yet</h3>
+            <p className="text-base-content/70 mb-6">
               No one has reviewed your properties yet
             </p>
             <Link to="/myProperties" className="btn btn-primary text-white">

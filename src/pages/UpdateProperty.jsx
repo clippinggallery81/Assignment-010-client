@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router";
 import { AuthContext } from "../provider/AuthContext";
 import { toast } from "react-toastify";
+import { authenticatedFetch } from "../utils/api";
 import {
   FaHome,
   FaMapMarkerAlt,
@@ -55,7 +56,7 @@ const UpdateProperty = () => {
         property_image: data.property_image,
       });
     } catch (error) {
-      toast.error(error.message || "Failed to load property data");
+      toast.error("Unable to load property. Please try again later.");
       navigate("/myProperties");
     } finally {
       setLoading(false);
@@ -89,21 +90,24 @@ const UpdateProperty = () => {
     };
 
     try {
-      const response = await fetch(`http://localhost:3000/properties/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedPropertyData),
-      });
+      const response = await authenticatedFetch(
+        `http://localhost:3000/properties/${id}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(updatedPropertyData),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to update property");
       }
 
       toast.success("Property updated successfully!");
+      navigate("/myProperties");
     } catch (error) {
-      toast.error(error.message || "Failed to update property");
+      toast.error(
+        "Unable to update property. Please check your information and try again."
+      );
     } finally {
       setSubmitting(false);
     }
@@ -133,7 +137,7 @@ const UpdateProperty = () => {
         <div
           data-aos="fade-up"
           data-aos-duration="1000"
-          className="bg-white rounded-2xl shadow-xl overflow-hidden"
+          className="bg-base-100 rounded-2xl shadow-xl overflow-hidden"
         >
           {/* Header */}
           <div className="bg-linear-to-r from-primary to-secondary p-8">
@@ -337,7 +341,7 @@ const UpdateProperty = () => {
                   <input
                     type="text"
                     value={user?.displayName || "Anonymous"}
-                    className="input input-bordered w-full bg-gray-100"
+                    className="input input-bordered w-full bg-base-200"
                     readOnly
                   />
                 </div>
@@ -350,7 +354,7 @@ const UpdateProperty = () => {
                   <input
                     type="email"
                     value={user?.email || ""}
-                    className="input input-bordered w-full bg-gray-100"
+                    className="input input-bordered w-full bg-base-200"
                     readOnly
                   />
                 </div>

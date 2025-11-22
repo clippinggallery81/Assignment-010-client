@@ -50,7 +50,7 @@ const OurTeam = () => {
   ];
 
   return (
-    <section className="py-16 bg-gray-50 mb-10 rounded-2xl">
+    <section className="py-16 bg-base-200 mb-10 rounded-2xl">
       <div className="w-10/12 mx-auto">
         {/* Section Header */}
         <div
@@ -58,10 +58,8 @@ const OurTeam = () => {
           data-aos-duration="1000"
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">
-            Meet Our Team
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <h2 className="text-4xl font-bold mb-4">Meet Our Team</h2>
+          <p className="text-base-content/70 max-w-2xl mx-auto">
             Our dedicated team of professionals is here to help you find your
             dream property and make your real estate journey seamless.
           </p>
@@ -75,7 +73,7 @@ const OurTeam = () => {
               data-aos="fade-up"
               data-aos-duration="1000"
               data-aos-delay={index * 100}
-              className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+              className="bg-base-100 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
             >
               {/* Image */}
               <div className="h-64 overflow-hidden">
@@ -88,31 +86,31 @@ const OurTeam = () => {
 
               {/* Content */}
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-1">
-                  {member.name}
-                </h3>
+                <h3 className="text-xl font-bold mb-1">{member.name}</h3>
                 <p className="text-primary font-medium mb-3">{member.role}</p>
-                <p className="text-gray-600 text-sm mb-4">{member.bio}</p>
+                <p className="text-base-content/70 text-sm mb-4">
+                  {member.bio}
+                </p>
 
                 {/* Social Links */}
-                <div className="flex gap-3 pt-3 border-t border-gray-200">
+                <div className="flex gap-3 pt-3 border-t border-base-300">
                   <a
                     href={member.linkedin}
-                    className="p-2 bg-gray-100 rounded-full hover:bg-primary hover:text-white transition-colors duration-300"
+                    className="p-2 bg-base-300 rounded-full hover:bg-primary hover:text-white transition-colors duration-300"
                     aria-label="LinkedIn"
                   >
                     <FaLinkedin className="w-5 h-5" />
                   </a>
                   <a
                     href={member.twitter}
-                    className="p-2 bg-gray-100 rounded-full hover:bg-primary hover:text-white transition-colors duration-300"
+                    className="p-2 bg-base-300 rounded-full hover:bg-primary hover:text-white transition-colors duration-300"
                     aria-label="Twitter"
                   >
                     <FaTwitter className="w-5 h-5" />
                   </a>
                   <a
                     href={`mailto:${member.email}`}
-                    className="p-2 bg-gray-100 rounded-full hover:bg-primary hover:text-white transition-colors duration-300"
+                    className="p-2 bg-base-300 rounded-full hover:bg-primary hover:text-white transition-colors duration-300"
                     aria-label="Email"
                   >
                     <FaEnvelope className="w-5 h-5" />
@@ -129,7 +127,9 @@ const OurTeam = () => {
           data-aos-duration="1000"
           className="text-center mt-12"
         >
-          <p className="text-gray-600 mb-4">Want to join our amazing team?</p>
+          <p className="text-base-content/70 mb-4">
+            Want to join our amazing team?
+          </p>
           <a
             href="mailto:careers@homenest.com?subject=Career Opportunity Inquiry"
             className="btn btn-primary text-white px-8"

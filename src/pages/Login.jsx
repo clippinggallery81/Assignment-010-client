@@ -86,7 +86,7 @@ const Login = () => {
       data-aos="fade-up"
       data-aos-easing="ease-out-cubic"
       data-aos-duration="2000"
-      className="bg-gray-50 shadow-xl rounded-2xl flex flex-col md:flex-row overflow-hidden w-full max-w-4xl mx-auto my-10"
+      className="bg-base-100 shadow-xl rounded-2xl flex flex-col md:flex-row overflow-hidden w-full max-w-4xl mx-auto my-10"
     >
       <div className="hidden md:block md:w-1/2">
         <img
@@ -109,7 +109,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="write your email"
-              className="border w-full mb-4 border-gray-300 rounded-full focus:outline-none px-5 py-3"
+              className="border w-full mb-4 border-base-300 rounded-full focus:outline-none px-5 py-3"
               required
             />
           </div>
@@ -122,13 +122,13 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="write your password"
-                className="w-full border border-gray-300 rounded-full px-5 py-3 focus:outline-none"
+                className="w-full border border-base-300 rounded-full px-5 py-3 focus:outline-none"
                 required
               />
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-500 hover:text-gray-900 transition"
+                className="absolute inset-y-0 right-0 flex items-center pr-4 text-base-content/50 hover:text-base-content transition"
               >
                 {passwordVisible ? (
                   <FaEyeSlash className="h-5 w-5" />
@@ -148,7 +148,10 @@ const Login = () => {
                 onChange={(e) => setRemember(e.target.checked)}
                 className="checkbox checkbox-sm"
               />
-              <label htmlFor="remember" className="text-sm text-gray-600 ml-2">
+              <label
+                htmlFor="remember"
+                className="text-sm text-base-content/70 ml-2"
+              >
                 Remember me
               </label>
             </div>
@@ -169,17 +172,17 @@ const Login = () => {
           </button>
         </form>
 
-        <div className="divider my-5 text-gray-400 text-sm">or</div>
+        <div className="divider my-5 text-base-content/40 text-sm">or</div>
 
         <button
           onClick={handleGoogleLogin}
-          className="flex items-center justify-center gap-3 border border-gray-300 rounded-full py-2 hover:bg-gray-100 transition"
+          className="flex items-center justify-center gap-3 border border-base-300 rounded-full py-2 hover:bg-base-200 transition"
         >
           <FcGoogle size={22} />
           <span className="text-sm font-medium">Sign In with Google</span>
         </button>
 
-        <p className="text-sm text-gray-600 text-center mt-6">
+        <p className="text-sm text-base-content/70 text-center mt-6">
           Don’t have an account?{" "}
           <Link
             to="/signup"

@@ -22,8 +22,8 @@ const Testimonial = () => {
       setTestimonials(data.slice(0, 6));
       setError(null);
     } catch (error) {
-      setError(error.message);
-      // Fallback to empty array if fetch fails
+      // Silently handle error - just show empty state
+      setError(null);
       setTestimonials([]);
     } finally {
       setLoading(false);
@@ -51,14 +51,14 @@ const Testimonial = () => {
   };
 
   return (
-    <div className="my-16 pt-10 pb-20 bg-linear-to-b from-gray-50 to-white overflow-hidden rounded-2xl">
+    <div className="my-16 pt-10 pb-20 bg-base-200 overflow-hidden rounded-2xl">
       <div className="">
         {/* Header */}
         <div className="text-center mb-12 px-3">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             What Our Clients Say
           </h2>
-          <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
+          <p className="text-base-content/70 text-base md:text-lg max-w-2xl mx-auto">
             Real experiences from our satisfied customers
           </p>
         </div>
@@ -77,7 +77,7 @@ const Testimonial = () => {
         ) : testimonials.length === 0 ? (
           <>
             <div className="text-center py-10">
-              <p className="text-gray-600 mb-6">
+              <p className="text-base-content/70 mb-6">
                 No testimonials yet. Be the first to share your experience!
               </p>
               <NavLink
@@ -104,7 +104,7 @@ const Testimonial = () => {
                     data-slide
                     className="w-full sm:w-[calc(100%-1rem)] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] shrink-0 snap-center"
                   >
-                    <div className="card bg-white shadow-xl hover:shadow-xl transition-all duration-300 hover:-translate-y-2 h-full border border-gray-100">
+                    <div className="card bg-base-100 shadow-xl hover:shadow-xl transition-all duration-300 hover:-translate-y-2 h-full border border-base-300">
                       <div className="card-body p-6">
                         {/* Quote Mark */}
                         <div className="text-primary text-5xl md:text-6xl mb-2 opacity-20 leading-none">
@@ -122,7 +122,7 @@ const Testimonial = () => {
                         </div>
 
                         {/* Testimonial Text */}
-                        <p className="text-gray-600 mb-6 italic leading-relaxed text-sm md:text-base grow">
+                        <p className="text-base-content/70 mb-6 italic leading-relaxed text-sm md:text-base grow">
                           "{testimonial.review}"
                         </p>
 
@@ -139,10 +139,10 @@ const Testimonial = () => {
                             </div>
                           </div>
                           <div>
-                            <h4 className="font-bold text-gray-800 text-base md:text-lg">
+                            <h4 className="font-bold text-base md:text-lg">
                               {testimonial.name}
                             </h4>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-base-content/60">
                               {testimonial.role}
                             </p>
                           </div>
@@ -176,12 +176,14 @@ const Testimonial = () => {
 
             {/* Mobile scroll hint */}
             <div className="text-center mt-4 md:hidden">
-              <p className="text-sm text-gray-500">← Swipe to see more →</p>
+              <p className="text-sm text-base-content/60">
+                ← Swipe to see more →
+              </p>
             </div>
 
             {/* CTA Section */}
             <div className="text-center mt-12 md:mt-16">
-              <p className="text-gray-700 text-base md:text-lg mb-4">
+              <p className="text-base-content/80 text-base md:text-lg mb-4">
                 Want to share your experience with us?
               </p>
               <NavLink

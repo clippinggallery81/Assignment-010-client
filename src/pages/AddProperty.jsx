@@ -54,13 +54,13 @@ const AddProperty = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/properties", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(propertyData),
-      });
+      const response = await authenticatedFetch(
+        "http://localhost:3000/properties",
+        {
+          method: "POST",
+          body: JSON.stringify(propertyData),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to add property");
@@ -81,12 +81,11 @@ const AddProperty = () => {
         property_image: "",
       });
 
-      // Navigate to my properties after 1.5 seconds
-      setTimeout(() => {
-        navigate("/myProperties");
-      }, 1500);
+      navigate("/myProperties");
     } catch (error) {
-      toast.error(error.message || "Failed to add property");
+      toast.error(
+        "Unable to add property. Please check all fields and try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -97,7 +96,7 @@ const AddProperty = () => {
       <div
         data-aos="fade-up"
         data-aos-duration="1000"
-        className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden"
+        className="max-w-4xl mx-auto bg-base-100 rounded-2xl shadow-xl overflow-hidden"
       >
         {/* Header */}
         <div className="bg-linear-to-r from-primary to-secondary p-8">

@@ -54,26 +54,28 @@ const AllProperties = () => {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="text-center">
-          <p className="text-red-500 text-xl font-semibold">Error: {error}</p>
-          <p className="text-gray-600 mt-2">Failed to load properties</p>
+          <p className="text-red-500 text-xl font-semibold">
+            Unable to Load Properties
+          </p>
+          <p className="text-base-content/70 mt-2">
+            Please check your connection and try again later.
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen py-10">
-      <div className="w-11/12 mx-auto px-4">
+    <div className="my-10">
+      <div className="md:w-11/12 mx-auto md:px-4">
         {/* Header */}
         <div
           data-aos="fade-down"
           data-aos-duration="1000"
           className="text-center mb-10"
         >
-          <h1 className="text-4xl font-bold text-gray-800 mb-3">
-            All Properties
-          </h1>
-          <p className="text-gray-600 text-lg">
+          <h1 className="text-4xl font-bold mb-3">All Properties</h1>
+          <p className="text-base-content/70 text-lg">
             Browse through our complete collection of properties
           </p>
           <div className="mt-2 text-primary font-semibold">
@@ -85,20 +87,18 @@ const AllProperties = () => {
         <div
           data-aos="fade-up"
           data-aos-duration="1000"
-          className="bg-white rounded-2xl shadow-lg p-6 mb-10"
+          className="bg-base-100 rounded-2xl shadow-lg p-6 mb-10"
         >
           <div className="flex items-center gap-2 mb-4">
             <FaFilter className="text-primary text-xl" />
-            <h2 className="text-xl font-semibold text-gray-800">
-              Filter & Search
-            </h2>
+            <h2 className="text-xl font-semibold">Filter & Search</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Search Input */}
             <div className="form-control">
               <div className="relative">
-                <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-base-content/40" />
                 <input
                   type="text"
                   placeholder="Search by name, city, or area..."
@@ -142,7 +142,9 @@ const AllProperties = () => {
           {/* Active Filters Info */}
           {(searchTerm || selectedCategory !== "All") && (
             <div className="mt-4 flex items-center gap-3">
-              <span className="text-sm text-gray-600">Active Filters:</span>
+              <span className="text-sm text-base-content/70">
+                Active Filters:
+              </span>
               {searchTerm && (
                 <span className="badge badge-primary gap-2">
                   Search: {searchTerm}
@@ -192,13 +194,11 @@ const AllProperties = () => {
         ) : (
           <div
             data-aos="fade-up"
-            className="text-center py-20 bg-white rounded-2xl shadow-lg"
+            className="text-center py-20 bg-base-100 rounded-2xl shadow-lg"
           >
             <div className="text-6xl mb-4">🏘️</div>
-            <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-              No Properties Found
-            </h3>
-            <p className="text-gray-600 mb-4">
+            <h3 className="text-2xl font-semibold mb-2">No Properties Found</h3>
+            <p className="text-base-content/70 mb-4">
               Try adjusting your search or filter criteria
             </p>
             <button

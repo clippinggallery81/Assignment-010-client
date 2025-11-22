@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { AuthContext } from "../provider/AuthContext";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { authenticatedFetch } from "../utils/api";
 import {
   FaMapMarkerAlt,
   FaTag,
@@ -28,7 +29,7 @@ const MyProperties = () => {
 
   const fetchMyProperties = async () => {
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         `http://localhost:3000/my-properties/${user.email}`
       );
       if (!response.ok) {
@@ -37,8 +38,9 @@ const MyProperties = () => {
       const data = await response.json();
       setProperties(data);
     } catch (err) {
-      setError(err.message);
-      toast.error(`Failed to load your properties: ${err.message}`);
+      setError(
+        "Unable to load your properties. Please check your connection and try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -60,9 +62,12 @@ const MyProperties = () => {
     if (!result.isConfirmed) return;
 
     try {
-      const response = await fetch(`http://localhost:3000/properties/${id}`, {
-        method: "DELETE",
-      });
+      const response = await authenticatedFetch(
+        `http://localhost:3000/properties/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to delete property");
@@ -101,7 +106,9 @@ const MyProperties = () => {
       <div className="flex justify-center items-center min-h-screen">
         <div className="text-center">
           <p className="text-red-500 text-xl font-semibold">Error: {error}</p>
-          <p className="text-gray-600 mt-2">Failed to load your properties</p>
+          <p className="text-base-content/70 mt-2">
+            Failed to load your properties
+          </p>
         </div>
       </div>
     );
@@ -116,10 +123,10 @@ const MyProperties = () => {
           data-aos-duration="1000"
           className="text-center mb-10"
         >
-          <h1 className="text-4xl font-bold text-gray-800 mb-3">
-            My Properties
-          </h1>
-          <p className="text-gray-600 text-lg">Manage your listed properties</p>
+          <h1 className="text-4xl font-bold mb-3">My Properties</h1>
+          <p className="text-base-content/70 text-lg">
+            Manage your listed properties
+          </p>
           <div className="mt-2 text-primary font-semibold">
             {properties.length}{" "}
             {properties.length === 1 ? "Property" : "Properties"} Listed
@@ -153,12 +160,12 @@ const MyProperties = () => {
 
                 <div className="card-body p-5">
                   {/* Property Name */}
-                  <h3 className="card-title text-lg font-bold text-gray-800 mb-2">
+                  <h3 className="card-title text-lg font-bold mb-2">
                     {property.property_name}
                   </h3>
 
                   {/* Category */}
-                  <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                  <div className="flex items-center gap-2 text-sm text-base-content/70 mb-2">
                     <FaTag className="text-primary" />
                     <span className="font-semibold">{property.category}</span>
                   </div>
@@ -179,7 +186,7 @@ const MyProperties = () => {
                   </div>
 
                   {/* Location */}
-                  <div className="flex items-center gap-2 text-gray-700 mb-2">
+                  <div className="flex items-center gap-2 text-base-content/80 mb-2">
                     <FaMapMarkerAlt className="text-primary shrink-0" />
                     <span className="text-sm">
                       {property.location.area}, {property.location.city}
@@ -187,7 +194,7 @@ const MyProperties = () => {
                   </div>
 
                   {/* Posted Date */}
-                  <div className="flex items-center gap-2 text-gray-600 mb-4">
+                  <div className="flex items-center gap-2 text-base-content/70 mb-4">
                     <FaCalendar className="text-primary" />
                     <span className="text-sm">
                       Posted:{" "}
@@ -235,13 +242,13 @@ const MyProperties = () => {
         ) : (
           <div
             data-aos="fade-up"
-            className="text-center py-20 bg-white rounded-2xl shadow-lg"
+            className="text-center py-20 bg-base-100 rounded-2xl shadow-lg"
           >
             <div className="text-6xl mb-4">🏘️</div>
-            <h3 className="text-2xl font-semibold text-gray-800 mb-2">
+            <h3 className="text-2xl font-semibold mb-2">
               No Properties Listed Yet
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-base-content/70 mb-6">
               Start by adding your first property listing
             </p>
             <Link to="/addProperties" className="btn btn-primary text-white">

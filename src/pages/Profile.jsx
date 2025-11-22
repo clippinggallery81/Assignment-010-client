@@ -52,12 +52,12 @@ const Profile = () => {
       <div
         data-aos="fade-up"
         data-aos-duration="1000"
-        className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden"
+        className="max-w-4xl mx-auto bg-base-100 rounded-2xl shadow-xl overflow-hidden"
       >
         {/* Header Section */}
         <div className="bg-linear-to-r from-primary to-secondary h-32 relative">
           <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2">
-            <div className="w-32 h-32 rounded-full border-4 border-white shadow-lg overflow-hidden bg-gray-200">
+            <div className="w-32 h-32 rounded-full border-4 border-white shadow-lg overflow-hidden bg-base-200">
               {user?.photoURL ? (
                 <img
                   src={user.photoURL}
@@ -74,10 +74,10 @@ const Profile = () => {
         {/* Profile Info Section */}
         <div className="pt-20 px-8 pb-8">
           <div className="text-center mb-6">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            <h1 className="text-3xl font-bold mb-2">
               {user?.displayName || "User"}
             </h1>
-            <div className="flex items-center justify-center gap-2 text-gray-600">
+            <div className="flex items-center justify-center gap-2 text-base-content/70">
               <FaEnvelope />
               <p>{user?.email}</p>
             </div>
@@ -90,7 +90,7 @@ const Profile = () => {
               className="max-w-md mx-auto space-y-4 mt-8"
             >
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-base-content/80 mb-2">
                   Display Name
                 </label>
                 <input
@@ -98,12 +98,12 @@ const Profile = () => {
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
                   placeholder="Enter your name"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-4 py-3 border border-base-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-base-content/80 mb-2">
                   Photo URL
                 </label>
                 <input
@@ -111,7 +111,7 @@ const Profile = () => {
                   value={photoURL}
                   onChange={(e) => setPhotoURL(e.target.value)}
                   placeholder="Enter photo URL"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-4 py-3 border border-base-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
 
@@ -136,13 +136,17 @@ const Profile = () => {
             <div className="max-w-md mx-auto space-y-4 mt-8">
               {/* Profile Stats or Additional Info */}
               <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="bg-gray-50 p-4 rounded-lg text-center">
+                <div className="bg-base-200 p-4 rounded-lg text-center">
                   <p className="text-2xl font-bold text-primary">0</p>
-                  <p className="text-sm text-gray-600">Properties Saved</p>
+                  <p className="text-sm text-base-content/70">
+                    Properties Saved
+                  </p>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-lg text-center">
+                <div className="bg-base-200 p-4 rounded-lg text-center">
                   <p className="text-2xl font-bold text-primary">0</p>
-                  <p className="text-sm text-gray-600">Properties Viewed</p>
+                  <p className="text-sm text-base-content/70">
+                    Properties Viewed
+                  </p>
                 </div>
               </div>
 
@@ -169,13 +173,11 @@ const Profile = () => {
           )}
 
           {/* Account Information */}
-          <div className="mt-8 pt-8 border-t border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">
-              Account Information
-            </h3>
+          <div className="mt-8 pt-8 border-t border-base-300">
+            <h3 className="text-lg font-semibold mb-4">Account Information</h3>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-600">Account Created:</span>
+                <span className="text-base-content/70">Account Created:</span>
                 <span className="font-medium">
                   {user?.metadata?.creationTime
                     ? new Date(user.metadata.creationTime).toLocaleDateString()
@@ -183,7 +185,7 @@ const Profile = () => {
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Last Sign In:</span>
+                <span className="text-base-content/70">Last Sign In:</span>
                 <span className="font-medium">
                   {user?.metadata?.lastSignInTime
                     ? new Date(
@@ -193,7 +195,7 @@ const Profile = () => {
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Email Verified:</span>
+                <span className="text-base-content/70">Email Verified:</span>
                 <span className="font-medium">
                   {user?.emailVerified ? (
                     <span className="text-green-600">Yes</span>

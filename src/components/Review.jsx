@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../provider/AuthContext";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import { authenticatedFetch } from "../utils/api";
 
 const Review = () => {
   const { user } = useContext(AuthContext);
@@ -89,11 +90,8 @@ const Review = () => {
         : "http://localhost:3000/testimonials";
       const method = existingReview ? "PUT" : "POST";
 
-      const response = await fetch(url, {
+      const response = await authenticatedFetch(url, {
         method,
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify(testimonialData),
       });
 
@@ -116,7 +114,7 @@ const Review = () => {
         navigate("/");
       }, 2000);
     } catch (error) {
-      toast.error(error.message || "Failed to submit review");
+      toast.error("Unable to submit your review. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -139,7 +137,7 @@ const Review = () => {
     if (!result.isConfirmed) return;
 
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         `http://localhost:3000/testimonials/${existingReview._id}`,
         {
           method: "DELETE",
@@ -199,14 +197,14 @@ const Review = () => {
       <div className="w-10/12 max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
             {existingReview && !isEditing
               ? "Your Review"
               : existingReview
               ? "Edit Your Review"
               : "Share Your Experience"}
           </h1>
-          <p className="text-gray-600 text-lg">
+          <p className="text-base-content/70 text-lg">
             {existingReview && !isEditing
               ? "You have already submitted a review"
               : "We'd love to hear about your experience with HomeNest"}
@@ -244,7 +242,7 @@ const Review = () => {
         )}
 
         {/* Review Form */}
-        <div className="card bg-white shadow-2xl">
+        <div className="card bg-base-100 shadow-2xl">
           <div className="card-body p-8 md:p-12">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name Field */}
@@ -259,7 +257,7 @@ const Review = () => {
                   name="name"
                   value={formData.name}
                   placeholder="Enter your full name"
-                  className="input input-bordered w-full text-lg bg-gray-100"
+                  className="input input-bordered w-full text-lg bg-base-200"
                   readOnly
                   required
                 />
@@ -277,7 +275,7 @@ const Review = () => {
                   name="email"
                   value={formData.email}
                   placeholder="your.email@example.com"
-                  className="input input-bordered w-full text-lg bg-gray-100"
+                  className="input input-bordered w-full text-lg bg-base-200"
                   readOnly
                   required
                 />
@@ -331,7 +329,7 @@ const Review = () => {
                       />
                     ))}
                   </div>
-                  <span className="text-gray-600 ml-4">
+                  <span className="text-base-content/70 ml-4">
                     ({formData.rating}{" "}
                     {formData.rating === "1" ? "star" : "stars"})
                   </span>
@@ -356,7 +354,7 @@ const Review = () => {
                   minLength={10}
                 ></textarea>
                 <label className="label justify-start">
-                  <span className="label-text-alt text-gray-500">
+                  <span className="label-text-alt text-base-content/60">
                     Minimum 10 characters ({formData.review.length}/10)
                   </span>
                 </label>
@@ -399,7 +397,7 @@ const Review = () => {
         </div>
 
         {/* Additional Info */}
-        <div className="text-center mt-8 text-gray-600">
+        <div className="text-center mt-8 text-base-content/70">
           <p className="mt-20">
             Your review helps us improve our services and helps others make
             informed decisions.
